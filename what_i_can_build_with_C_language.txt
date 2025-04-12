@@ -1,0 +1,129 @@
+C is a powerful, low-level programming language, and you can build a wide range of software with it — especially where performance, control, and efficiency matter.
+
+Here’s a list of what you can build with C:
+
+
+---
+
+1. Operating Systems
+
+Linux kernel
+
+Unix
+
+Embedded OS (RTOS)
+
+Windows (some parts)
+
+
+
+---
+
+2. Embedded Systems
+
+Microcontroller firmware (AVR, ARM, STM32, etc.)
+
+IoT devices
+
+Robotics control systems
+
+
+
+---
+
+3. System Software
+
+Compilers (e.g., GCC)
+
+Assemblers, linkers
+
+Shells (e.g., Bash)
+
+Device drivers
+
+
+
+---
+
+4. Game Development
+
+2D/3D games (low-level game engines)
+
+Graphics libraries (OpenGL, SDL)
+
+Game logic for retro and console games
+
+
+
+---
+
+5. Networking Tools
+
+Custom TCP/IP stacks
+
+Packet sniffers
+
+Firewalls and VPNs
+
+Load balancers and proxies
+
+
+
+---
+
+6. Databases and Interpreters
+
+Build your own mini database
+
+Command parsers
+
+Scripting language interpreters (like Lua’s core)
+
+
+
+---
+
+7. CLI Tools and Utilities
+
+File managers
+
+Process monitors
+
+Backup and sync tools
+
+Custom commands (like htop, rsync, grep)
+
+
+
+---
+
+8. Security Tools
+
+Exploit development
+
+Buffer overflow tests
+
+Pen-testing tools (like parts of Metasploit or Nmap)
+
+
+
+---
+
+9. Real-time & Industrial Systems
+
+Automotive control software
+
+Industrial automation
+
+Medical devices
+
+
+
+---
+
+10. GUI Applications (with libraries)
+
+Using GTK, Qt (C-based bindings)
+
+Cross-platform tools
+
