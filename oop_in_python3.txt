@@ -1,0 +1,871 @@
+[4/22, 9:19 AM] pen: OOP Fundamentals in Python 
+
+Classes and Objects 
+
+Classes are blueprints for creating objects. An object is an instance of a class. A class defines properties and behaviors using variables and methods. Example: 
+
+class Dog: 
+    def __init__(self, name): 
+        self.name = name 
+
+my_dog = Dog("Buddy") 
+
+__init__ constructor and instance variables 
+
+The __init__ method initializes the object's attributes. Instance variables are unique to each object. 
+Example: 
+
+class Car: 
+    def __init__(self, brand): 
+         self.brand = brand 
+
+c1 = Car("Toyota") 
+
+Instance methods and attributes 
+Instance methods operate on instance data. They always have 'self' as the first parameter. 
+
+Example: 
+
+class Person: 
+      def __init__(self, name): 
+           self.name = name 
+
+      def greet(self): 
+           print("Hello, my name is", self.name)
+
+
+Class variables and methods
+ (@classmethod) 
+
+
+Class variables are shared across all instances. @classmethod is used to access class variables or methods at the class level. 
+
+Example: 
+
+class Employee: 
+     company = "TechCorp" 
+
+     def __init__(self, name): 
+          self.name = name 
+
+    @classmethod 
+
+    def show_company(cls): 
+          print(cls.company) 
+
+Static methods (@staticmethod) 
+@staticmethod defines a method that doesn't access instance or class data. It's used for utility functions. Example:
+
+class Math: 
+    @staticmethod 
+
+    def add(a, b): 
+        return a + b
+
+
+Inheritance (single, multilevel, multiple) 
+
+Inheritance allows one class to derive properties from another. 
+Single: One class inherits another. 
+Multilevel: Class C inherits B which inherits A. 
+
+Multiple: Class inherits from multiple classes. Example: 
+
+class A: pass 
+
+class B(A): pass 
+
+class C(B): pass 
+
+class D(X, Y): pass 
+
+Method overriding 
+In a subclass, you can override methods of the parent class by defining them again. Example: 
+
+class Animal: 
+     def speak(self): 
+         print("Animal speaks") 
+
+
+class Dog(Animal): 
+    def speak(self): 
+         print("Dog barks")
+
+
+super() function 
+
+The super() function is used to call a method from the parent class. 
+Example: 
+
+class Parent: 
+    def __init__(self): 
+        print("Parent init") 
+
+class Child(Parent): 
+       def __init__(self): 
+             super().__init__() 
+             print("Child init")
+[4/22, 9:25 AM] pen: Advance OOP in python3
+
+
+1. Encapsulation (private/protected members)
+
+Encapsulation hides internal object details and controls access.
+
+class Demo:
+    def __init__(self):
+        self.public = "I am public"
+        self._protected = "I am protected"
+        self.__private = "I am private"
+
+    def get_private(self):
+        return self.__private
+
+obj = Demo()
+print(obj.public)       # OK
+print(obj._protected)   # Possible, but not recommended
+print(obj.get_private())  # Proper access to private
+
+
+
+
+2. Polymorphism
+
+Polymorphism lets different classes implement the same interface.
+
+class Cat:
+    def speak(self):
+        return "Meow"
+
+class Dog:
+    def speak(self):
+        return "Bark"
+
+animals = [Cat(), Dog()]
+for animal in animals:
+    print(animal.speak())  # Each calls its own speak()
+
+
+
+
+3. Abstraction (via Abstract Base Classes - ABC)
+
+Abstract classes define a common interface using abc.
+
+from abc import ABC, abstractmethod
+
+class Animal(ABC):
+    @abstractmethod
+    def make_sound(self):
+        pass
+
+class Dog(Animal):
+    def make_sound(self):
+        return "Bark"
+
+d = Dog()
+print(d.make_sound())
+
+
+
+
+4. Magic / Dunder Methods (__str__, __repr__, etc.)
+
+Dunder methods customize how objects behave.
+
+class Book:
+    def __init__(self, title):
+        self.title = title
+
+    def __str__(self):
+        return f"Book: {self.title}"
+
+    def __repr__(self):
+        return f"Book('{self.title}')"
+
+b = Book("1984")
+print(str(b))
+print(repr(b))
+
+
+
+
+5. Operator Overloading
+
+Allows operators to work with custom objects.
+
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __add__(self, other):
+        return Vector(self.x + other.x, self.y + other.y)
+
+v1 = Vector(2, 3)
+v2 = Vector(1, 4)
+v3 = v1 + v2  # Uses __add__()
+print(v3.x, v3.y)
+
+
+
+
+6. Mixins
+
+Mixins provide reusable methods across classes.
+
+class LoggerMixin:
+    def log(self, msg):
+        print(f"[LOG]: {msg}")
+
+class Worker(LoggerMixin):
+    def work(self):
+        self.log("Working hard...")
+
+w = Worker()
+w.work()
+
+
+
+
+7. Multiple Inheritance Resolution (MRO)
+
+MRO determines method lookup order.
+
+class A: pass
+class B(A): pass
+class C(A): pass
+class D(B, C): pass
+
+print(D.__mro__)  # Method Resolution Order
+
+
+
+
+8. __slots__ for Memory Optimization
+
+__slots__ prevents dynamic creation of instance dictionaries, saving memory.
+
+class Point:
+    __slots__ = ['x', 'y']
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+p = Point(1, 2)
+print(p.x, p.y)
+[4/22, 9:30 AM] pen: Python OOP Design Principles and Patterns
+
+
+
+
+1. SOLID Principles
+
+These are five principles that help make software designs more understandable, flexible, and maintainable.
+
+S – Single Responsibility Principle
+
+A class should have only one reason to change. It should do one thing only.
+
+class Invoice:
+    def __init__(self, amount):
+        self.amount = amount
+
+    def calculate_total(self):
+        return self.amount * 1.18  # tax
+
+class InvoicePrinter:
+    def print_invoice(self, invoice):
+        print(f"Total: {invoice.calculate_total()}")
+
+O – Open/Closed Principle
+
+Software entities should be open for extension, but closed for modification.
+
+class Shape:
+    def area(self):
+        raise NotImplementedError
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+
+    def area(self):
+        return 3.14 * self.radius * self.radius
+
+L – Liskov Substitution Principle
+
+Subtypes must be substitutable for their base types.
+
+class Bird:
+    def fly(self):
+        pass
+
+class Sparrow(Bird):
+    def fly(self):
+        print("Flying")
+
+def make_it_fly(bird: Bird):
+    bird.fly()
+
+I – Interface Segregation Principle
+
+Clients should not be forced to depend on interfaces they do not use.
+
+In Python, use abstract base classes to define focused interfaces.
+
+from abc import ABC, abstractmethod
+
+class Workable(ABC):
+    @abstractmethod
+    def work(self):
+        pass
+
+class Eater(ABC):
+    @abstractmethod
+    def eat(self):
+        pass
+
+D – Dependency Inversion Principle
+
+Depend on abstractions, not on concrete implementations.
+
+class Database(ABC):
+    @abstractmethod
+    def save(self, data):
+        pass
+
+class MySQLDatabase(Database):
+    def save(self, data):
+        print("Saving to MySQL")
+
+class Service:
+    def __init__(self, db: Database):
+        self.db = db
+
+    def save_data(self, data):
+        self.db.save(data)
+
+
+
+
+2. DRY, KISS, YAGNI Principles
+
+DRY – Don’t Repeat Yourself
+
+Avoid duplicating logic or code.
+
+KISS – Keep It Simple, Stupid
+
+Design and code should be simple and easy to understand.
+
+YAGNI – You Aren’t Gonna Need It
+
+Don’t add functionality until it's necessary.
+
+
+
+
+3. Composition vs Inheritance
+
+Inheritance: “is-a” relationship
+
+class Dog(Animal):
+    pass
+
+Composition: “has-a” relationship
+
+class Engine:
+    def start(self):
+        print("Engine started")
+
+class Car:
+    def __init__(self):
+        self.engine = Engine()
+
+    def start(self):
+        self.engine.start()
+
+Use composition over inheritance when possible for better flexibility.
+
+
+
+
+4. Design Patterns
+
+
+
+
+Singleton Pattern
+
+Ensures a class has only one instance.
+
+class Singleton:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
+
+
+
+Factory Pattern
+
+Creates objects without exposing the instantiation logic.
+
+class Dog:
+    def speak(self):
+        return "Woof"
+
+class Cat:
+    def speak(self):
+        return "Meow"
+
+class AnimalFactory:
+    def get_animal(self, animal_type):
+        if animal_type == "dog":
+            return Dog()
+        elif animal_type == "cat":
+            return Cat()
+
+
+
+
+Observer Pattern
+
+An object (subject) notifies observers when its state changes.
+
+class Subject:
+    def __init__(self):
+        self._observers = []
+
+    def register(self, observer):
+        self._observers.append(observer)
+
+    def notify(self, data):
+        for observer in self._observers:
+            observer.update(data)
+
+class Observer:
+    def update(self, data):
+        print("Got data:", data)
+
+
+
+
+Strategy Pattern
+
+Defines a family of algorithms and makes them interchangeable.
+
+class Context:
+    def __init__(self, strategy):
+        self.strategy = strategy
+
+    def execute(self, data):
+        return self.strategy(data)
+
+def strategy_add(data):
+    return sum(data)
+
+def strategy_max(data):
+    return max(data)
+
+ctx = Context(strategy_add)
+print(ctx.execute([1, 2, 3]))
+
+
+
+
+Adapter Pattern
+
+Allows incompatible interfaces to work together.
+
+class EuropeanPlug:
+    def voltage(self):
+        return 230
+
+class USAdapter:
+    def __init__(self, plug):
+        self.plug = plug
+
+    def voltage(self):
+        return self.plug.voltage() / 2  # Convert for US
+
+
+
+
+Decorator Pattern (Class-based)
+
+Adds new functionality to an object dynamically.
+
+class Coffee:
+    def cost(self):
+        return 5
+
+class MilkDecorator(Coffee):
+    def __init__(self, base):
+        self.base = base
+
+    def cost(self):
+        return self.base.cost() + 2
+
+coffee = MilkDecorator(Coffee())
+print(coffee.cost())  # Output: 7
+[4/22, 9:35 AM] pen: Python OOP – Real-World Applications
+
+
+
+1. Build Reusable Libraries Using Classes
+
+Organize your utility code into reusable, modular components using classes.
+
+class MathUtils:
+    @staticmethod
+    def add(x, y):
+        return x + y
+
+    @staticmethod
+    def multiply(x, y):
+        return x * y
+
+Use case: Create a utility package (math_utils.py) for use across multiple projects.
+
+
+
+
+2. Use OOP in GUI Apps (e.g., PyQt, PySide, Tkinter)
+
+GUI frameworks are class-based. Each widget and window is typically a class.
+
+Example with Tkinter:
+
+import tkinter as tk
+
+class MyApp:
+    def __init__(self, root):
+        self.label = tk.Label(root, text="Hello World")
+        self.label.pack()
+
+root = tk.Tk()
+app = MyApp(root)
+root.mainloop()
+
+Use case: Build scalable desktop apps with proper structure and event handling.
+
+
+
+
+3. Apply OOP in Django Models and Views
+
+Django models, views, and forms are all class-based.
+
+Example Django model:
+
+from django.db import models
+
+class Book(models.Model):
+    title = models.CharField(max_length=100)
+    author = models.CharField(max_length=100)
+
+Example class-based view:
+
+from django.views import View
+from django.http import HttpResponse
+
+class HomeView(View):
+    def get(self, request):
+        return HttpResponse("Welcome!")
+
+Use case: MVC pattern implemented using OOP for web applications.
+
+
+
+
+4. Build Games with Pygame Using OOP
+
+Games involve entities like players, enemies, etc., which are naturally modeled with classes.
+
+import pygame
+
+class Player:
+    def __init__(self, x, y):
+        self.rect = pygame.Rect(x, y, 50, 50)
+
+    def draw(self, screen):
+        pygame.draw.rect(screen, (255, 0, 0), self.rect)
+
+Use case: Object-oriented game loops with custom classes for sprites and game logic.
+
+
+
+
+5. Create REST APIs Using OOP Structure in Flask/Django
+
+Organize API endpoints using classes (especially in Django REST Framework).
+
+Example using Flask + class-based view:
+
+from flask import Flask, jsonify
+from flask.views import MethodView
+
+app = Flask(__name__)
+
+class HelloAPI(MethodView):
+    def get(self):
+        return jsonify({'message': 'Hello, API'})
+
+app.add_url_rule('/api/hello', view_func=HelloAPI.as_view('hello'))
+
+Use case: Organize large APIs with versioning, middleware, and modular structure.
+[4/22, 9:38 AM] pen: Python OOP – Testing and Documentation
+
+
+
+1. Unit Testing OOP Code with unittest or pytest
+
+Object-oriented code is naturally testable using test classes.
+
+Example using unittest:
+
+import unittest
+
+class Calculator:
+    def add(self, x, y):
+        return x + y
+
+class TestCalculator(unittest.TestCase):
+    def test_add(self):
+        calc = Calculator()
+        self.assertEqual(calc.add(2, 3), 5)
+
+if __name__ == "__main__":
+    unittest.main()
+
+Example using pytest:
+
+class Calculator:
+    def add(self, x, y):
+        return x + y
+
+def test_add():
+    calc = Calculator()
+    assert calc.add(2, 3) == 5
+
+
+
+2. Mocking Classes and Methods
+
+Mock external or heavy dependencies during testing to isolate logic.
+
+from unittest.mock import MagicMock
+
+class Database:
+    def fetch_data(self):
+        pass
+
+class Service:
+    def __init__(self, db):
+        self.db = db
+
+    def get_data(self):
+        return self.db.fetch_data()
+
+def test_service():
+    mock_db = MagicMock()
+    mock_db.fetch_data.return_value = "mocked data"
+    service = Service(mock_db)
+    assert service.get_data() == "mocked data"
+
+
+
+
+3. Docstrings for Classes and Methods
+
+Use docstrings to describe the purpose, parameters, and return values.
+
+class Rectangle:
+    """
+    Represents a rectangle.
+
+    Attributes:
+        width (int): The width of the rectangle.
+        height (int): The height of the rectangle.
+    """
+    def __init__(self, width, height):
+        """
+        Initializes a Rectangle.
+
+        Args:
+            width (int): Width of the rectangle.
+            height (int): Height of the rectangle.
+        """
+        self.width = width
+        self.height = height
+
+    def area(self):
+        """Returns the area of the rectangle."""
+        return self.width * self.height
+
+
+
+
+4. Using Sphinx to Document OOP Codebases
+
+Sphinx auto-generates documentation from your Python code and docstrings.
+
+Steps:
+
+1. Install Sphinx:
+
+pip install sphinx
+
+
+2. Generate a new Sphinx project:
+
+sphinx-quickstart
+
+
+3. Enable autodoc in conf.py:
+
+extensions = ['sphinx.ext.autodoc']
+
+
+4. Create .rst files and use .. automodule:: your_module and .. autoclass:: YourClass.
+
+
+5. Build documentation:
+
+make html
+
+
+
+Use case: For documenting large OOP projects with full API references.
+[4/22, 9:40 AM] pen: Python OOP – Extras for Mastery
+
+
+
+
+1. Metaclasses
+
+Metaclasses are classes that define the behavior of other classes.
+
+Example:
+
+class MyMeta(type):
+    def __new__(cls, name, bases, dct):
+        print(f"Creating class: {name}")
+        return super().__new__(cls, name, bases, dct)
+
+class MyClass(metaclass=MyMeta):
+    pass
+
+Use case: Enforce constraints, auto-register classes, modify class definitions dynamically.
+
+
+
+
+2. Descriptors (__get__, __set__)
+
+Descriptors control access to attributes.
+
+class Descriptor:
+    def __get__(self, instance, owner):
+        return instance._value
+
+    def __set__(self, instance, value):
+        instance._value = value
+
+class MyClass:
+    attr = Descriptor()
+
+obj = MyClass()
+obj.attr = 10
+print(obj.attr)
+
+Use case: Custom attribute access, validation, computed fields (used in Django ORM).
+
+
+
+
+3. Context Managers (__enter__, __exit__)
+
+Use context managers for resource management.
+
+class FileOpener:
+    def __init__(self, filename):
+        self.filename = filename
+
+    def __enter__(self):
+        self.file = open(self.filename)
+        return self.file
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.file.close()
+
+with FileOpener("data.txt") as f:
+    print(f.read())
+
+Use case: Manage resources like files, sockets, and database connections.
+
+
+
+
+4. Class Decorators
+
+Decorators that modify or enhance class behavior.
+
+def singleton(cls):
+    instances = {}
+    def wrapper(*args, **kwargs):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kwargs)
+        return instances[cls]
+    return wrapper
+
+@singleton
+class Database:
+    pass
+
+Use case: Logging, enforcing singleton, registering classes.
+
+
+
+
+5. Data Classes (@dataclass)
+
+Simplify class creation for data containers.
+
+from dataclasses import dataclass
+
+@dataclass
+class Point:
+    x: int
+    y: int
+
+Use case: Reduces boilerplate in classes used for storing structured data.
+
+
+
+
+6. Typing & Generics (typing, TypeVar)
+
+Helps in writing type-safe, generic code.
+
+from typing import List, TypeVar, Generic
+
+T = TypeVar('T')
+
+class Stack(Generic[T]):
+    def __init__(self):
+        self.items: List[T] = []
+
+    def push(self, item: T):
+        self.items.append(item)
+
+    def pop(self) -> T:
+        return self.items.pop()
+
+Use case: Building reusable and type-safe libraries, better editor support and static analysis.
